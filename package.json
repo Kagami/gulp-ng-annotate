@@ -1,0 +1,37 @@
+{
+  "name": "gulp-ng-annotate",
+  "version": "0.1.0",
+  "description": "Add angularjs dependency injection annotations with ng-annotate",
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kagami/gulp-ng-annotate.git"
+  },
+  "keywords": [
+    "gulpplugin",
+    "angular",
+    "angularjs",
+    "annotate",
+    "ng-annotate"
+  ],
+  "author": "Kagami Hiiragi",
+  "license": "CC0",
+  "bugs": {
+    "url": "https://github.com/Kagami/gulp-ng-annotate/issues"
+  },
+  "homepage": "https://github.com/Kagami/gulp-ng-annotate",
+  "dependencies": {
+    "gulp-util": "^2.2.14",
+    "ng-annotate": "^0.7.2",
+    "through2": "^0.4.1"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}
