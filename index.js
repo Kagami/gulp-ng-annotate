@@ -16,12 +16,12 @@ module.exports = function () {
       return cb();
     }
 
-    try {
-      var annotated = ngAnnotate(file.contents.toString(), {add: true}).src;
-      file.contents = new Buffer(annotated);
-    } catch (err) {
-      this.emit("error", new gutil.PluginError("gulp-ng-annotate", err));
+    var res = ngAnnotate(file.contents.toString(), {add: true});
+    if (res.errors) {
+      this.emit("error", new gutil.PluginError("gulp-ng-annotate", res.errors.join("\n")));
+      return cb();
     }
+    file.contents = new Buffer(res.src);
 
     this.push(file);
     cb();
