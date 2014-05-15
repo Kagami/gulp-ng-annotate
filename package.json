@@ -28,7 +28,7 @@
   "homepage": "https://github.com/Kagami/gulp-ng-annotate",
   "dependencies": {
     "gulp-util": "^2.2.14",
-    "ng-annotate": "^0.7.2",
+    "ng-annotate": "^0.9.1",
     "through2": "^0.4.1"
   },
   "devDependencies": {
