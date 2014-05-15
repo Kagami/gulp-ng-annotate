@@ -1,4 +1,4 @@
-# gulp-ng-annotate
+# [gulp](http://gulpjs.com)-ng-annotate
 
 > Add angularjs dependency injection annotations with [ng-annotate](https://github.com/olov/ng-annotate)
 
