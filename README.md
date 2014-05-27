@@ -21,6 +21,19 @@ gulp.task('default', function () {
 });
 ```
 
+## Options
+
+You can pass any of the [ng-annotate options](https://github.com/olov/ng-annotate#installation-and-usage) as an object:
+```js
+{
+	remove: true,
+	add: true,
+	single_quotes: true
+}
+```
+
+If no options provided, plugin will be executed with `{add: true}`
+
 ## License
 
 gulp-ng-annotate - Add angularjs dependency injection annotations with ng-annotate
