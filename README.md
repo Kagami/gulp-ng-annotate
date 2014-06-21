@@ -1,4 +1,4 @@
-# [gulp](http://gulpjs.com)-ng-annotate
+# [gulp](http://gulpjs.com)-ng-annotate [![Build Status](https://travis-ci.org/Kagami/gulp-ng-annotate.svg?branch=master)](https://travis-ci.org/Kagami/gulp-ng-annotate)
 
 > Add angularjs dependency injection annotations with [ng-annotate](https://github.com/olov/ng-annotate)
 
