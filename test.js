@@ -43,4 +43,15 @@ describe("gulp-ng-annotate", function() {
     }
   });
 
+  it("should support passing ng-annotate options", function (done) {
+    var stream = ngAnnotate({remove: true});
+
+    stream.on("data", function (data) {
+      assert.equal(data.contents.toString(), ORIGINAL);
+      done();
+    });
+
+    stream.write(new gutil.File({contents: new Buffer(TRANSFORMED)}));
+  });
+
 });
