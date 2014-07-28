@@ -20,7 +20,11 @@ module.exports = function (options) {
 
     var res = ngAnnotate(file.contents.toString(), opts);
     if (res.errors) {
-      this.emit("error", new gutil.PluginError("gulp-ng-annotate", res.errors.join("\n")));
+      var filename = "";
+      if (file.path) {
+        filename = file.relative + ": ";
+      }
+      this.emit("error", new gutil.PluginError("gulp-ng-annotate", filename + res.errors.join("\n")));
       return cb();
     }
     file.contents = new Buffer(res.src);

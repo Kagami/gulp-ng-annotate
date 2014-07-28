@@ -39,6 +39,7 @@ describe("gulp-ng-annotate", function() {
         stream.write(new gutil.File({contents: new Buffer(BAD_INPUT)}));
     } catch (err) {
         assert(err instanceof gutil.PluginError);
+        assert.equal(err.message.slice(0, 7), "error: ")
         done();
     }
   });
@@ -54,4 +55,15 @@ describe("gulp-ng-annotate", function() {
     stream.write(new gutil.File({contents: new Buffer(TRANSFORMED)}));
   });
 
+  it("should show filename on error", function (done) {
+    var stream = ngAnnotate();
+
+    try {
+        stream.write(new gutil.File({path: "1.js", contents: new Buffer(BAD_INPUT)}));
+    } catch (err) {
+        assert(err instanceof gutil.PluginError);
+        assert.equal(err.message.slice(0, 13), "1.js: error: ")
+        done();
+    }
+  });
 });
