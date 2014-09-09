@@ -37,7 +37,13 @@ module.exports = function (options) {
     file.contents = new Buffer(res.src);
 
     if (opts.sourcemap && file.sourceMap) {
+      var fileprop = file.sourceMap.file;
       applySourceMap(file, res.map);
+      // Restore file property because source-map generator loose it for
+      // some reason. See
+      // <https://github.com/terinjokes/gulp-uglify/issues/53> for more
+      // details.
+      file.sourceMap.file = fileprop;
     }
 
     this.push(file);

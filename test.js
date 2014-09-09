@@ -79,4 +79,22 @@ describe("gulp-ng-annotate", function() {
       done();
     });
   });
+
+  it("should allow to skip source map generation", function (done) {
+    var stream = sourcemaps.init()
+    stream.write(new gutil.File({path: "1.js", contents: new Buffer(ORIGINAL)}));
+    stream.pipe(ngAnnotate({sourcemap: false})).on("data", function (data) {
+      assert.equal(data.sourceMap.mappings, "");
+      done();
+    });
+  });
+
+  it("should preserve file attribute in the sourcemap object", function (done) {
+    var stream = sourcemaps.init()
+    stream.write(new gutil.File({path: "1.js", contents: new Buffer(ORIGINAL)}));
+    stream.pipe(ngAnnotate()).on("data", function (data) {
+      assert.equal(data.sourceMap.file, "1.js");
+      done();
+    });
+  });
 });
