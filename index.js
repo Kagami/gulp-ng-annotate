@@ -36,7 +36,7 @@ module.exports = function (options) {
     }
     file.contents = new Buffer(res.src);
 
-    if (file.sourceMap) {
+    if (opts.sourcemap && file.sourceMap) {
       applySourceMap(file, res.map);
     }
 
