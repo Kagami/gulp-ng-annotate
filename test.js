@@ -7,7 +7,6 @@ var sourcemaps = require("gulp-sourcemaps");
 
 var ORIGINAL = 'angular.module("test"); m.directive("foo", function($a, $b) {});';
 var TRANSFORMED = 'angular.module("test"); m.directive("foo", ["$a", "$b", function($a, $b) {}]);';
-var MAPPINGS = 'AAAA,2CAA2C,aAAA,mBAAmB,CAAA';
 var BAD_INPUT = 'angular.module("test").directive("foo", function$a, $b) {});';
 
 describe("gulp-ng-annotate", function() {
@@ -74,7 +73,6 @@ describe("gulp-ng-annotate", function() {
     stream.pipe(ngAnnotate()).on("data", function (data) {
       assert.equal(data.contents.toString(), TRANSFORMED);
       assert.equal(data.sourceMap.sourcesContent, ORIGINAL);
-      assert.equal(data.sourceMap.mappings, MAPPINGS);
       assert.deepEqual(data.sourceMap.sources, ["1.js"]);
       done();
     });
