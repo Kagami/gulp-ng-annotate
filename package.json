@@ -1,6 +1,6 @@
 {
   "name": "gulp-ng-annotate",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Add angularjs dependency injection annotations with ng-annotate",
   "main": "index.js",
   "engines": {
@@ -29,7 +29,7 @@
   "dependencies": {
     "gulp-util": "^2.2.14",
     "merge": "^1.1.3",
-    "ng-annotate": "~0.11.0",
+    "ng-annotate": "~0.12.0",
     "through2": "~0.4.1",
     "vinyl-sourcemaps-apply": "~0.1.1"
   },
