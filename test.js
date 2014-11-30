@@ -72,7 +72,7 @@ describe("gulp-ng-annotate", function() {
     stream.write(new gutil.File({path: "1.js", contents: new Buffer(ORIGINAL)}));
     stream.pipe(ngAnnotate()).on("data", function (data) {
       assert.equal(data.contents.toString(), TRANSFORMED);
-      assert.equal(data.sourceMap.sourcesContent, ORIGINAL);
+      assert.deepEqual(data.sourceMap.sourcesContent, [ORIGINAL]);
       assert.deepEqual(data.sourceMap.sources, ["1.js"]);
       done();
     });

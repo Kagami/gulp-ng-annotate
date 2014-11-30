@@ -21,8 +21,15 @@ module.exports = function (options) {
     }
 
     var opts = merge({sourcemap: !!file.sourceMap}, options);
-    if (file.path) {
-      opts.inFile = file.relative;
+    if (opts.sourcemap) {
+      // Convert possible boolean option to object since ng-annotate
+      // changed it's format in 0.14.0.
+      if (typeof opts.sourcemap === "boolean") {
+        opts.sourcemap = {};
+      }
+      if (file.path) {
+        opts.sourcemap.inFile = file.relative;
+      }
     }
 
     var res = ngAnnotate(file.contents.toString(), opts);
