@@ -48,7 +48,7 @@ module.exports = function (options) {
       // Workaround for GH-9.
       if (file.sourceMap.file !== file.relative) {
         var relative = file.relative.replace(/\\/g, "/");
-        gutil.log("gulp-ng-annotate: workaround for GH-9: change sourcemap `file` option from `"+file.sourceMap.file+"` to `"+relative+"`; if that breaks your sourcemap setup, please comment at https://github.com/Kagami/gulp-ng-annotate/issues/9");
+        gutil.log("gulp-ng-annotate: workaround for GH-9: change sourcemap `file` option from `"+file.sourceMap.file+"` to `"+relative+"`; if it breaks your sourcemap setup, please comment at https://github.com/Kagami/gulp-ng-annotate/issues/9");
         file.sourceMap.file = relative;
       }
       sourceMap.file = file.relative;
