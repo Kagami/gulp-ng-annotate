@@ -5,19 +5,44 @@ var through = require("through2");
 var ngAnnotate = require("ng-annotate");
 var applySourceMap = require("vinyl-sourcemaps-apply");
 var merge = require("merge");
+var BufferStreams = require("bufferstreams");
+
+var PLUGIN_NAME = "gulp-ng-annotate";
+
+// Function which handle logic for both stream and buffer modes.
+function transform(file, input, opts) {
+  var res = ngAnnotate(input.toString(), opts);
+  if (res.errors) {
+    var filename = "";
+    if (file.path) {
+      filename = file.relative + ": ";
+    }
+    throw new gutil.PluginError(PLUGIN_NAME, filename + res.errors.join("\n"));
+  }
+
+  if (opts.sourcemap && file.sourceMap) {
+    var sourceMap = JSON.parse(res.map);
+    // Workaround for GH-9.
+    if (file.sourceMap.file !== file.relative) {
+      var relative = file.relative.replace(/\\/g, "/");
+      gutil.log(PLUGIN_NAME, "workaround for GH-9: change sourcemap `file` option from `"+file.sourceMap.file+"` to `"+relative+"`; if it breaks your sourcemap setup, please comment at https://github.com/Kagami/gulp-ng-annotate/issues/9");
+      file.sourceMap.file = relative;
+    }
+    sourceMap.file = file.relative;
+    applySourceMap(file, sourceMap);
+  }
+
+  return new Buffer(res.src);
+}
 
 module.exports = function (options) {
   options = options || {add: true};
 
-  return through.obj(function (file, enc, cb) {
+  return through.obj(function (file, enc, done) {
+    // When null just pass through.
     if (file.isNull()) {
       this.push(file);
-      return cb();
-    }
-
-    if (file.isStream()) {
-      this.emit("error", new gutil.PluginError("gulp-ng-annotate", "Streaming not supported"));
-      return cb();
+      return done();
     }
 
     var opts = merge({sourcemap: !!file.sourceMap}, options);
@@ -32,30 +57,28 @@ module.exports = function (options) {
       }
     }
 
-    var res = ngAnnotate(file.contents.toString(), opts);
-    if (res.errors) {
-      var filename = "";
-      if (file.path) {
-        filename = file.relative + ": ";
+    // Buffer input.
+    if (file.isBuffer()) {
+      try {
+        file.contents = transform(file, file.contents, opts);
+      } catch (e) {
+        this.emit("error", e);
+        return done();
       }
-      this.emit("error", new gutil.PluginError("gulp-ng-annotate", filename + res.errors.join("\n")));
-      return cb();
-    }
-    file.contents = new Buffer(res.src);
-
-    if (opts.sourcemap && file.sourceMap) {
-      var sourceMap = JSON.parse(res.map);
-      // Workaround for GH-9.
-      if (file.sourceMap.file !== file.relative) {
-        var relative = file.relative.replace(/\\/g, "/");
-        gutil.log("gulp-ng-annotate: workaround for GH-9: change sourcemap `file` option from `"+file.sourceMap.file+"` to `"+relative+"`; if it breaks your sourcemap setup, please comment at https://github.com/Kagami/gulp-ng-annotate/issues/9");
-        file.sourceMap.file = relative;
-      }
-      sourceMap.file = file.relative;
-      applySourceMap(file, sourceMap);
+    // Dealing with stream input.
+    } else {
+      file.contents = file.contents.pipe(new BufferStreams(function(err, buf, cb) {
+        if (err) return cb(new gutil.PluginError(PLUGIN_NAME, err));
+        try {
+          var transformed = transform(file, buf, opts)
+        } catch (e) {
+          return cb(e);
+        }
+        cb(null, transformed);
+      }));
     }
 
     this.push(file);
-    cb();
+    done();
   });
 };

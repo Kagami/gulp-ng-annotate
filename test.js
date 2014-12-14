@@ -1,5 +1,6 @@
 "use strict";
 
+var Readable = require("stream").Readable;
 var assert = require("assert");
 var gutil = require("gulp-util");
 var ngAnnotate = require("./index");
@@ -94,5 +95,21 @@ describe("gulp-ng-annotate", function() {
       assert.equal(data.sourceMap.file, "1.js");
       done();
     });
+  });
+
+  it("should support streams", function(done) {
+    var stream = ngAnnotate();
+    var contentsStream = new Readable();
+    contentsStream.push(ORIGINAL);
+    contentsStream.push(null);
+
+    stream.on("data", function (file) {
+      file.contents.on("data", function(data) {
+        assert.equal(data, TRANSFORMED);
+        done();
+      });
+    });
+
+    stream.write(new gutil.File({contents: contentsStream}));
   });
 });
