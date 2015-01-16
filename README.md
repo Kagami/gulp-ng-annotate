@@ -32,7 +32,7 @@ You can pass any of the [ng-annotate options](https://github.com/olov/ng-annotat
 }
 ```
 
-If no options provided, plugin will be executed with `{add: true}`
+`add: true` option is implied by default unless `remove` is set to true.
 
 ## License
 

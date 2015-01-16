@@ -36,7 +36,10 @@ function transform(file, input, opts) {
 }
 
 module.exports = function (options) {
-  options = options || {add: true};
+  options = options || {};
+  if (!options.remove) {
+    options = merge({add: true}, options);
+  };
 
   return through.obj(function (file, enc, done) {
     // When null just pass through.
