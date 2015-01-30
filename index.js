@@ -23,8 +23,8 @@ function transform(file, input, opts) {
   if (opts.sourcemap && file.sourceMap) {
     var sourceMap = JSON.parse(res.map);
     // Workaround for GH-9.
-    if (file.sourceMap.file !== file.relative) {
-      var relative = file.relative.replace(/\\/g, "/");
+    var relative = file.relative.replace(/\\/g, "/");
+    if (file.sourceMap.file !== relative) {
       if (opts.gulpWarnings !== false) {
         gutil.log(PLUGIN_NAME, "workaround for GH-9: change sourcemap `file` option from `"+file.sourceMap.file+"` to `"+relative+"`; if it breaks your sourcemap setup, please comment at https://github.com/Kagami/gulp-ng-annotate/issues/9 (you can mute this warning with `gulpWarnings: false` option)");
       }
