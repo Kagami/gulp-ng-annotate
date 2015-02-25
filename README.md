@@ -38,7 +38,7 @@ You can pass any of the [ng-annotate options](https://github.com/olov/ng-annotat
 
 gulp-ng-annotate - Add angularjs dependency injection annotations with ng-annotate
 
-Written in 2014-2015 by Kagami Hiiragi <kagami@genshiken.org>
+Written in 2014-2015 by Kagami Hiiragi <kagami@genshiken.org>  
 Written in 2014 by gulp-ng-annotate contributors
 
 To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
