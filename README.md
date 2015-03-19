@@ -34,6 +34,17 @@ You can pass any of the [ng-annotate options](https://github.com/olov/ng-annotat
 
 `add: true` option is implied by default unless `remove` is set to true.
 
+## FAQ
+
+**Q:** I got an error `Error in plugin 'gulp-ng-annotate': error: couldn't process source due to parse error`.  
+**A:** That's not a `gulp-ng-annotate` or `ng-annotate` error: you passed the invalid JavaScript code to the plugin. Check your source code near the specified place.
+
+**Q:** I need the latest version of `ng-annotate`.  
+**A:** Make sure you are using the latest version of `gulp-ng-annotate`. Also try to reinstall/update it to get the latest suitable version of `ng-annotate` from npm.
+
+**Q:** I need a new annotating feature/annotations are incorrect.  
+**A:** Report it to ng-annotate's [bugtracker](https://github.com/olov/ng-annotate/issues). `gulp-ng-annotate` is just a wrapper around `ng-annotate`.
+
 ## License
 
 gulp-ng-annotate - Add angularjs dependency injection annotations with ng-annotate
