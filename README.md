@@ -23,7 +23,7 @@ gulp.task('default', function () {
 
 ## Options
 
-You can pass any of the [ng-annotate options](https://github.com/olov/ng-annotate#installation-and-usage) as an object:
+You can pass any of the [ng-annotate options](https://github.com/olov/ng-annotate#library-api) as an object:
 ```js
 {
 	remove: true,
