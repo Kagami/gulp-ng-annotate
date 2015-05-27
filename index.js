@@ -20,7 +20,7 @@ function transform(file, input, opts) {
     throw new gutil.PluginError(PLUGIN_NAME, filename + res.errors.join("\n"));
   }
 
-  if (opts.sourcemap && file.sourceMap) {
+  if (opts.map && file.sourceMap) {
     var sourceMap = JSON.parse(res.map);
     // Workaround for GH-26.
     var relative = file.relative.replace(/\\/g, "/");
@@ -50,15 +50,13 @@ module.exports = function (options) {
       return done();
     }
 
-    var opts = merge({sourcemap: !!file.sourceMap}, options);
-    if (opts.sourcemap) {
-      // Convert possible boolean option to object since ng-annotate
-      // changed it's format in 0.14.0.
-      if (typeof opts.sourcemap === "boolean") {
-        opts.sourcemap = {};
+    var opts = merge({map: !!file.sourceMap}, options);
+    if (opts.map) {
+      if (typeof opts.map === "boolean") {
+        opts.map = {};
       }
       if (file.path) {
-        opts.sourcemap.inFile = file.relative;
+        opts.map.inFile = file.relative;
       }
     }
 

@@ -82,7 +82,7 @@ describe("gulp-ng-annotate", function() {
   it("should allow to skip source map generation", function (done) {
     var stream = sourcemaps.init()
     stream.write(new gutil.File({path: "1.js", contents: new Buffer(ORIGINAL)}));
-    stream.pipe(ngAnnotate({sourcemap: false})).on("data", function (data) {
+    stream.pipe(ngAnnotate({map: false})).on("data", function (data) {
       assert.equal(data.sourceMap.mappings, "");
       done();
     });
