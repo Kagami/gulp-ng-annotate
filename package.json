@@ -21,7 +21,7 @@
     "ng-annotate"
   ],
   "author": "Kagami Hiiragi",
-  "license": "CC0",
+  "license": "CC0-1.0",
   "bugs": {
     "url": "https://github.com/Kagami/gulp-ng-annotate/issues"
   },
