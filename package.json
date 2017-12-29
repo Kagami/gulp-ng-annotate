@@ -28,14 +28,15 @@
   "homepage": "https://github.com/Kagami/gulp-ng-annotate",
   "dependencies": {
     "bufferstreams": "^1.1.0",
-    "gulp-util": "^3.0.7",
     "merge": "^1.2.0",
     "ng-annotate": "^1.2.1",
+    "plugin-error": "^0.1.2",
     "through2": "^2.0.1",
     "vinyl-sourcemaps-apply": "^0.2.1"
   },
   "devDependencies": {
     "gulp-sourcemaps": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "vinyl": "^2.1.0"
   }
 }

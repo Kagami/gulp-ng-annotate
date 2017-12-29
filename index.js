@@ -1,11 +1,11 @@
 "use strict";
 
-var gutil = require("gulp-util");
 var through = require("through2");
 var ngAnnotate = require("ng-annotate");
 var applySourceMap = require("vinyl-sourcemaps-apply");
 var merge = require("merge");
 var BufferStreams = require("bufferstreams");
+var PluginError = require("plugin-error");
 
 var PLUGIN_NAME = "gulp-ng-annotate";
 
@@ -17,7 +17,7 @@ function transform(file, input, opts) {
     if (file.path) {
       filename = file.relative + ": ";
     }
-    throw new gutil.PluginError(PLUGIN_NAME, filename + res.errors.join("\n"));
+    throw new PluginError(PLUGIN_NAME, filename + res.errors.join("\n"));
   }
 
   if (opts.map && file.sourceMap) {
@@ -63,7 +63,7 @@ module.exports = function (options) {
     // Dealing with stream input.
     } else {
       file.contents = file.contents.pipe(new BufferStreams(function(err, buf, cb) {
-        if (err) return cb(new gutil.PluginError(PLUGIN_NAME, err));
+        if (err) return cb(new PluginError(PLUGIN_NAME, err));
         try {
           var transformed = transform(file, buf, opts)
         } catch (e) {

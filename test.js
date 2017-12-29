@@ -2,9 +2,10 @@
 
 var Readable = require("stream").Readable;
 var assert = require("assert");
-var gutil = require("gulp-util");
 var ngAnnotate = require("./index");
 var sourcemaps = require("gulp-sourcemaps");
+var Vinyl = require("vinyl");
+var PluginError = require("plugin-error");
 
 var ORIGINAL = 'angular.module("test"); m.directive("foo", function($a, $b) {});';
 var TRANSFORMED = 'angular.module("test"); m.directive("foo", ["$a", "$b", function($a, $b) {}]);';
@@ -19,7 +20,7 @@ describe("gulp-ng-annotate", function() {
       done();
     });
 
-    stream.write(new gutil.File({contents: new Buffer(ORIGINAL)}));
+    stream.write(new Vinyl({contents: new Buffer(ORIGINAL)}));
   });
 
   it("should not touch already annotated declarations", function (done) {
@@ -30,16 +31,16 @@ describe("gulp-ng-annotate", function() {
       done();
     });
 
-    stream.write(new gutil.File({contents: new Buffer(TRANSFORMED)}));
+    stream.write(new Vinyl({contents: new Buffer(TRANSFORMED)}));
   });
 
   it("should emit PluginError on bad input", function (done) {
     var stream = ngAnnotate();
 
     try {
-      stream.write(new gutil.File({contents: new Buffer(BAD_INPUT)}));
+      stream.write(new Vinyl({contents: new Buffer(BAD_INPUT)}));
     } catch (err) {
-      assert(err instanceof gutil.PluginError);
+      assert(err instanceof PluginError);
       assert.equal(err.message.slice(0, 7), "error: ")
       done();
     }
@@ -53,16 +54,16 @@ describe("gulp-ng-annotate", function() {
       done();
     });
 
-    stream.write(new gutil.File({contents: new Buffer(TRANSFORMED)}));
+    stream.write(new Vinyl({contents: new Buffer(TRANSFORMED)}));
   });
 
   it("should show filename on error", function (done) {
     var stream = ngAnnotate();
 
     try {
-      stream.write(new gutil.File({path: "1.js", contents: new Buffer(BAD_INPUT)}));
+      stream.write(new Vinyl({path: "1.js", contents: new Buffer(BAD_INPUT)}));
     } catch (err) {
-      assert(err instanceof gutil.PluginError);
+      assert(err instanceof PluginError);
       assert.equal(err.message.slice(0, 13), "1.js: error: ")
       done();
     }
@@ -70,7 +71,7 @@ describe("gulp-ng-annotate", function() {
 
   it("should support source maps", function (done) {
     var stream = sourcemaps.init()
-    stream.write(new gutil.File({path: "1.js", contents: new Buffer(ORIGINAL)}));
+    stream.write(new Vinyl({path: "1.js", contents: new Buffer(ORIGINAL)}));
     stream.pipe(ngAnnotate()).on("data", function (data) {
       assert.equal(data.contents.toString(), TRANSFORMED);
       assert.deepEqual(data.sourceMap.sourcesContent, [ORIGINAL]);
@@ -81,7 +82,7 @@ describe("gulp-ng-annotate", function() {
 
   it("should allow to skip source map generation", function (done) {
     var stream = sourcemaps.init()
-    stream.write(new gutil.File({path: "1.js", contents: new Buffer(ORIGINAL)}));
+    stream.write(new Vinyl({path: "1.js", contents: new Buffer(ORIGINAL)}));
     stream.pipe(ngAnnotate({map: false})).on("data", function (data) {
       assert.equal(data.sourceMap.mappings, "");
       done();
@@ -90,7 +91,7 @@ describe("gulp-ng-annotate", function() {
 
   it("should preserve file attribute in the sourcemap object", function (done) {
     var stream = sourcemaps.init()
-    stream.write(new gutil.File({path: "1.js", contents: new Buffer(ORIGINAL)}));
+    stream.write(new Vinyl({path: "1.js", contents: new Buffer(ORIGINAL)}));
     stream.pipe(ngAnnotate()).on("data", function (data) {
       assert.equal(data.sourceMap.file, "1.js");
       done();
@@ -110,6 +111,6 @@ describe("gulp-ng-annotate", function() {
       });
     });
 
-    stream.write(new gutil.File({contents: contentsStream}));
+    stream.write(new Vinyl({contents: contentsStream}));
   });
 });
